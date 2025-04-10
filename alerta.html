@@ -1,50 +1,80 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Alerta de Evento</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
-      background-color: #f9f9f9;
-    }
-    #mensagem {
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 30px;
-    }
-    #status {
-      font-size: 22px;
-      color: #ff7f00;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerta de Evento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f9f9f9;
+        }
+        #mensagem {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
-  <div id="mensagem">Processando alerta...</div>
-  <div id="status">Status: Aguardando...</div>
-  <audio id="somAlerta" autoplay>
-    <source src="" type="audio/mpeg">
-    Seu navegador não suporta o elemento de áudio.
-  </audio>
 
-  <script>
-    function obterParametro(nome) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(nome);
-    }
+    <div id="mensagem">Processando alerta...</div>
 
-    function atualizarStatus(status) {
-      const statusDiv = document.getElementById("status");
-      statusDiv.innerText = `Status: ${status}`;
-    }
+    <script>
+        // Definindo os eventos e suas mensagens
+        const eventos = {
+            vaga: {
+                mensagem: "🎯 VAGA DETECTADA no site de agendamentos!",
+                repeticoes: 10
+            },
+            ok: {
+                mensagem: "🔐 ok",
+                repeticoes: 1
+            },
+            chutado: {
+                mensagem: "🚫 Você foi CHUTADO do sistema por erro interno.",
+                repeticoes: 1
+            }
+        };
 
-    // Leitura do parâmetro de status da URL
-    const status = obterParametro('status');
-    if (status) {
-      atualizarStatus(status);
-    }
-  </script>
+        // Função para obter o parâmetro "tipo" da URL
+        function obterParametro(nome) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(nome);
+        }
+
+        // Função para enviar a notificação via Telegram
+        function enviarNotificacao(mensagem, repeticoes) {
+            const url = "https://api.telegram.org/bot7284975115:AAHu8krgrGJXXW_GyTxUFbyDfnIVsQcdUdg/sendMessage";
+            for (let i = 0; i < repeticoes; i++) {
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        chat_id: "7631883392",
+                        text: mensagem
+                    })
+                })
+                .then(() => console.log(`📩 Mensagem ${i+1} enviada`))
+                .catch(err => console.warn("❌ Erro ao enviar:", err));
+            }
+        }
+
+        // Obtendo o tipo de evento da URL
+        const tipoEvento = obterParametro('tipo');
+        
+        // Verificando se o evento existe e executando as ações
+        if (eventos[tipoEvento]) {
+            const evento = eventos[tipoEvento];
+            document.getElementById('mensagem').innerText = evento.mensagem;
+            enviarNotificacao(evento.mensagem, evento.repeticoes);
+        } else {
+            document.getElementById('mensagem').innerText = "❓ Tipo de evento desconhecido.";
+        }
+    </script>
 </body>
 </html>
