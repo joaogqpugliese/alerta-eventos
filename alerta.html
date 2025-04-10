@@ -36,7 +36,11 @@
       }
     };
 
-    // Função para enviar notificação ao Telegram
+    function obterParametro(nome) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(nome);
+    }
+
     function enviarNotificacao(mensagem, repeticoes) {
       const url = "https://api.telegram.org/bot7284975115:AAHu8krgrGJXXW_GyTxUFbyDfnIVsQcdUdg/sendMessage";
       for (let i = 0; i < repeticoes; i++) {
@@ -55,13 +59,6 @@
       }
     }
 
-    // Função para verificar parâmetro da URL
-    function obterParametro(nome) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(nome);
-    }
-
-    // Detecta o tipo de evento e envia o alerta
     const tipoEvento = obterParametro('tipo');
     if (eventos[tipoEvento]) {
       const evento = eventos[tipoEvento];
@@ -71,23 +68,19 @@
       document.getElementById('mensagem').innerText = "❓ Tipo de evento desconhecido.";
     }
 
-    // Monitoramento do sinal de funcionamento do script
     let timeoutId;
     let alertSent = false;
     let checked = false;
 
-    // Função para verificar o sinal de funcionamento do script
     function monitorScript() {
       const signal = localStorage.getItem('scriptRunning');
 
       if (signal === 'true') {
-          // Sinal recebido, resetando o alerta
           console.log("🟢 Script está funcionando.");
           localStorage.setItem('scriptRunning', 'false');  // Reseta o sinal para a próxima verificação
           clearTimeout(timeoutId);
           timeoutId = setTimeout(monitorScript, 30000);  // Verifica novamente em 30 segundos
       } else {
-          // Se não receber o sinal e já tiver checado, envia o alerta
           if (!alertSent && checked) {
               alertSent = true;
               alert("⚠️ O script parou de rodar ou não está mais enviando o sinal.");
@@ -104,7 +97,6 @@
       }
     }
 
-    // Inicia o monitoramento assim que a página carregar
     window.onload = monitorScript;
   </script>
 </body>
