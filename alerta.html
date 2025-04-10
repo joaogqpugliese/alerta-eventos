@@ -28,15 +28,18 @@
     const eventos = {
       vaga: {
         mensagem: "🎯 VAGA DETECTADA no site de agendamentos!",
-        som: "https://www.soundjay.com/button/beep-05.wav"
+        som: "https://www.soundjay.com/button/beep-05.wav",
+        repeticoes: 10
       },
       logout: {
         mensagem: "🔐 Sessão expirada por inatividade.",
-        som: "https://www.soundjay.com/button/beep-09.wav"
+        som: "https://www.soundjay.com/button/beep-09.wav",
+        repeticoes: 1
       },
       chutado: {
         mensagem: "🚫 Você foi CHUTADO do sistema por erro interno.",
-        som: "https://www.soundjay.com/button/beep-10.wav"
+        som: "https://www.soundjay.com/button/beep-10.wav",
+        repeticoes: 1
       }
     };
 
@@ -45,9 +48,9 @@
       return urlParams.get(nome);
     }
 
-    function enviarNotificacao(mensagem) {
+    function enviarNotificacao(mensagem, repeticoes) {
       const url = "https://api.telegram.org/bot7284975115:AAHu8krgrGJXXW_GyTxUFbyDfnIVsQcdUdg/sendMessage";
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < repeticoes; i++) {
         fetch(url, {
           method: "POST",
           headers: {
@@ -71,7 +74,7 @@
       const somAlerta = document.getElementById('somAlerta');
       somAlerta.src = evento.som;
       somAlerta.play().catch(() => alert("🔊 Alerta sonoro não pôde ser reproduzido."));
-      enviarNotificacao(evento.mensagem);
+      enviarNotificacao(evento.mensagem, evento.repeticoes);
     } else {
       document.getElementById('mensagem').innerText = "❓ Tipo de evento desconhecido.";
     }
