@@ -1,100 +1,115 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Alerta de Evento</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
-      background-color: #f9f9f9;
-    }
-    #mensagem {
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 30px;
-    }
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.5">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
   </style>
 </head>
 <body>
-  <div id="mensagem">Processando alerta...</div>
-
-  <script>
-    const eventos = {
-      vaga: {
-        mensagem: "🎯 VAGA DETECTADA no site de agendamentos!",
-        repeticoes: 10
-      },
-      logout: {
-        mensagem: "🔐 Sessão expirada por inatividade.",
-        repeticoes: 1
-      },
-      chutado: {
-        mensagem: "🚫 Você foi CHUTADO do sistema por erro interno.",
-        repeticoes: 1
-      }
-    };
-
-    function obterParametro(nome) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(nome);
-    }
-
-    function enviarNotificacao(mensagem, repeticoes) {
-      const url = "https://api.telegram.org/bot7284975115:AAHu8krgrGJXXW_GyTxUFbyDfnIVsQcdUdg/sendMessage";
-      for (let i = 0; i < repeticoes; i++) {
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            chat_id: "7631883392",
-            text: mensagem
-          })
-        })
-        .then(() => console.log(`📩 Mensagem ${i+1} enviada`))
-        .catch(err => console.warn("❌ Erro ao enviar:", err));
-      }
-    }
-
-    const tipoEvento = obterParametro('tipo');
-
-    if (eventos[tipoEvento]) {
-      const evento = eventos[tipoEvento];
-      document.getElementById('mensagem').innerText = evento.mensagem;
-      enviarNotificacao(evento.mensagem, evento.repeticoes);
-    } else {
-      document.getElementById('mensagem').innerText = "❓ Tipo de evento desconhecido.";
-    }
-
-    let timeoutId;
-    let alertSent = false;
-
-    // Função para verificar se o sinal foi recebido
-    function monitorScript() {
-      const signal = localStorage.getItem('scriptRunning');
-
-      if (signal === 'true') {
-          // Sinal recebido, resetando o alerta
-          console.log("🟢 Script está funcionando.");
-          localStorage.setItem('scriptRunning', 'false');  // Reseta o sinal para a próxima verificação
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(monitorScript, 30000); // Verifica novamente em 30 segundos
-      } else {
-          // Se não receber o sinal, envia o alerta
-          if (!alertSent) {
-              alertSent = true;
-              alert("⚠️ O script parou de rodar ou não está mais enviando o sinal.");
-              console.log("🔴 O script não enviou o sinal. Enviando alerta.");
-              window.location.href = "https://joaogqpugliese.github.io/alerta-eventos/alerta.html?tipo=chutado";  // Chama a si mesmo
-          }
-      }
-    }
-
-    // Inicia o monitoramento assim que a página carregar
-    window.onload = monitorScript;
-  </script>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="pt-BR"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Alerta de Evento&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: Arial, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 50px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background-color: #f9f9f9;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>#mensagem {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 28px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: bold;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 30px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="mensagem"&gt;Processando alerta...&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const eventos = {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>vaga: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>mensagem: "🎯 VAGA DETECTADA no site de agendamentos!",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>repeticoes: 10</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>logout: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>mensagem: "🔐 Sessão expirada por inatividade.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>repeticoes: 1</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>chutado: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>mensagem: "🚫 Você foi CHUTADO do sistema por erro interno.",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>repeticoes: 1</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function obterParametro(nome) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const urlParams = new URLSearchParams(window.location.search);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return urlParams.get(nome);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function enviarNotificacao(mensagem, repeticoes) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const url = "https://api.telegram.org/bot7284975115:AAHu8krgrGJXXW_GyTxUFbyDfnIVsQcdUdg/sendMessage";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>for (let i = 0; i &lt; repeticoes; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>fetch(url, {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>method: "POST",</p>
+<p class="p1"><span class="Apple-converted-space">          </span>headers: {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>"Content-Type": "application/json"</p>
+<p class="p1"><span class="Apple-converted-space">          </span>},</p>
+<p class="p1"><span class="Apple-converted-space">          </span>body: JSON.stringify({</p>
+<p class="p1"><span class="Apple-converted-space">            </span>chat_id: "7631883392",</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text: mensagem</p>
+<p class="p1"><span class="Apple-converted-space">          </span>})</p>
+<p class="p1"><span class="Apple-converted-space">        </span>})</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.then(() =&gt; console.log(`📩 Mensagem ${i+1} enviada`))</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.catch(err =&gt; console.warn("❌ Erro ao enviar:", err));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const tipoEvento = obterParametro('tipo');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (eventos[tipoEvento]) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const evento = eventos[tipoEvento];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('mensagem').innerText = evento.mensagem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>enviarNotificacao(evento.mensagem, evento.repeticoes);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('mensagem').innerText = "❓ Tipo de evento desconhecido.";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>let timeoutId;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let alertSent = false;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function monitorScript() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const signal = localStorage.getItem('scriptRunning');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (signal === 'true') {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>console.log("🟢 Script está funcionando.");</p>
+<p class="p1"><span class="Apple-converted-space">          </span>localStorage.setItem('scriptRunning', 'false');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>clearTimeout(timeoutId);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>timeoutId = setTimeout(monitorScript, 30000);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (!alertSent) {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>alertSent = true;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>alert("⚠️ O script parou de rodar ou não está mais enviando o sinal.");</p>
+<p class="p1"><span class="Apple-converted-space">              </span>console.log("🔴 O script não enviou o sinal. Enviando alerta.");</p>
+<p class="p1"><span class="Apple-converted-space">              </span>window.location.href = "https://joaogqpugliese.github.io/alerta-eventos/alerta.html?tipo=chutado";</p>
+<p class="p1"><span class="Apple-converted-space">          </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Aguardar 20 segundos antes de iniciar o monitoramento</p>
+<p class="p1"><span class="Apple-converted-space">    </span>window.onload = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setTimeout(monitorScript, 20000);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
 </body>
 </html>
