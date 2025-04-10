@@ -46,15 +46,20 @@
     }
 
     function enviarNotificacao(mensagem) {
-      const webhookURL = "https://eokepihnw2yepgb.m.pipedream.net";
+      const url = "https://api.telegram.org/bot7284975115:AAHu8krgrGJXXW_GyTxUFbyDfnIVsQcdUdg/sendMessage";
       for (let i = 0; i < 10; i++) {
-        fetch(webhookURL, {
+        fetch(url, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ alerta: mensagem })
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            chat_id: "7631883392",
+            text: mensagem
+          })
         })
-        .then(() => console.log(`📡 Notificação ${i+1} enviada ao webhook`))
-        .catch(() => console.warn(`⚠️ Falha ao enviar notificação ${i+1} ao webhook`));
+        .then(() => console.log(`📩 Mensagem ${i+1} enviada`))
+        .catch(err => console.warn("❌ Erro ao enviar:", err));
       }
     }
 
