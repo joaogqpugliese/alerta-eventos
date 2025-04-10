@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.5">
+  <style type="text/css">
+    body {background-color: #f7f7f7}
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 28.0px Arial; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 28.0px Arial; -webkit-text-stroke: #000000; min-height: 32.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>&lt;!DOCTYPE html&gt;</b></span></p>
+<p class="p1"><span class="s1"><b>&lt;html lang="pt-BR"&gt;</b></span></p>
+<p class="p1"><span class="s1"><b>&lt;head&gt;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">  </span>&lt;title&gt;Alerta de Evento&lt;/title&gt;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">  </span>&lt;style&gt;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>body {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>font-family: Arial, sans-serif;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>text-align: center;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>padding: 50px;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>}</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>#mensagem {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>font-size: 24px;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>margin-bottom: 20px;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>}</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">  </span>&lt;/style&gt;</b></span></p>
+<p class="p1"><span class="s1"><b>&lt;/head&gt;</b></span></p>
+<p class="p1"><span class="s1"><b>&lt;body&gt;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">  </span>&lt;div id="mensagem"&gt;Processando alerta...&lt;/div&gt;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">  </span>&lt;audio id="somAlerta" autoplay&gt;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>&lt;source src="" type="audio/mpeg"&gt;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>Seu navegador não suporta o elemento de áudio.</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">  </span>&lt;/audio&gt;</b></span></p>
+<p class="p2"><span class="s1"><b></b></span><br></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">  </span>&lt;script&gt;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>// Mapeamento dos eventos para mensagens e sons</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>const eventos = {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>vaga: {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">        </span>mensagem: "🎯 VAGA DETECTADA no site de agendamentos!",</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">        </span>som: "https://www.soundjay.com/button/beep-07.wav"</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>},</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>logout: {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">        </span>mensagem: "🔐 Sessão expirada por inatividade.",</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">        </span>som: "https://www.soundjay.com/button/beep-09.wav"</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>},</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>chutado: {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">        </span>mensagem: "🚫 Você foi CHUTADO do sistema por erro interno.",</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">        </span>som: "https://www.soundjay.com/button/beep-10.wav"</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>}</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>};</b></span></p>
+<p class="p2"><span class="s1"><b></b></span><br></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>// Função para obter parâmetros da URL</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>function obterParametro(nome) {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>const urlParams = new URLSearchParams(window.location.search);</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>return urlParams.get(nome);</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>}</b></span></p>
+<p class="p2"><span class="s1"><b></b></span><br></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>// Função para enviar mensagem ao Telegram via Pipedream</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>function enviarNotificacao(mensagem) {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>const webhookURL = "https://eokepihnw2yepgb.m.pipedream.net";</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>for (let i = 0; i &lt; 10; i++) { // Enviar 10 mensagens</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">        </span>fetch(webhookURL, {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">          </span>method: "POST",</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">          </span>headers: { "Content-Type": "application/json" },</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">          </span>body: JSON.stringify({ alerta: mensagem })</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">        </span>})</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">        </span>.then(() =&gt; console.log(`📡 Notificação ${i+1} enviada ao webhook`))</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">        </span>.catch(() =&gt; console.warn(`⚠️ Falha ao enviar notificação ${i+1} ao webhook`));</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>}</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>}</b></span></p>
+<p class="p2"><span class="s1"><b></b></span><br></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>// Identificar o tipo de evento</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>const tipoEvento = obterParametro('tipo');</b></span></p>
+<p class="p2"><span class="s1"><b></b></span><br></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>if (eventos[tipoEvento]) {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>const evento = eventos[tipoEvento];</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>document.getElementById('mensagem').innerText = evento.mensagem;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>const somAlerta = document.getElementById('somAlerta');</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>somAlerta.src = evento.som;</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>somAlerta.play().catch(() =&gt; alert("🔊 Alerta sonoro não pôde ser reproduzido."));</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>enviarNotificacao(evento.mensagem);</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>} else {</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">      </span>document.getElementById('mensagem').innerText = "❓ Tipo de evento desconhecido.";</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">    </span>}</b></span></p>
+<p class="p1"><span class="s1"><b><span class="Apple-converted-space">  </span>&lt;/script&gt;</b></span></p>
+<p class="p1"><span class="s1"><b>&lt;/body&gt;</b></span></p>
+<p class="p1"><span class="s1"><b>&lt;/html&gt;</b></span></p>
+</body>
+</html>
