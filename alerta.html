@@ -15,89 +15,36 @@
       font-weight: bold;
       margin-bottom: 30px;
     }
+    #status {
+      font-size: 22px;
+      color: #ff7f00;
+    }
   </style>
 </head>
 <body>
   <div id="mensagem">Processando alerta...</div>
+  <div id="status">Status: Aguardando...</div>
+  <audio id="somAlerta" autoplay>
+    <source src="" type="audio/mpeg">
+    Seu navegador não suporta o elemento de áudio.
+  </audio>
 
   <script>
-    const eventos = {
-      vaga: {
-        mensagem: "🎯 VAGA DETECTADA no site de agendamentos!",
-        repeticoes: 10
-      },
-      logout: {
-        mensagem: "🔐 Sessão expirada por inatividade.",
-        repeticoes: 1
-      },
-      chutado: {
-        mensagem: "🚫 Você foi CHUTADO do sistema por erro interno.",
-        repeticoes: 1
-      }
-    };
-
     function obterParametro(nome) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(nome);
     }
 
-    function enviarNotificacao(mensagem, repeticoes) {
-      const url = "https://api.telegram.org/bot7284975115:AAHu8krgrGJXXW_GyTxUFbyDfnIVsQcdUdg/sendMessage";
-      for (let i = 0; i < repeticoes; i++) {
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            chat_id: "7631883392",
-            text: mensagem
-          })
-        })
-        .then(() => console.log(`📩 Mensagem ${i+1} enviada`))
-        .catch(err => console.warn("❌ Erro ao enviar:", err));
-      }
+    function atualizarStatus(status) {
+      const statusDiv = document.getElementById("status");
+      statusDiv.innerText = `Status: ${status}`;
     }
 
-    const tipoEvento = obterParametro('tipo');
-    if (eventos[tipoEvento]) {
-      const evento = eventos[tipoEvento];
-      document.getElementById('mensagem').innerText = evento.mensagem;
-      enviarNotificacao(evento.mensagem, evento.repeticoes);
-    } else {
-      document.getElementById('mensagem').innerText = "❓ Tipo de evento desconhecido.";
+    // Leitura do parâmetro de status da URL
+    const status = obterParametro('status');
+    if (status) {
+      atualizarStatus(status);
     }
-
-    let timeoutId;
-    let alertSent = false;
-    let checked = false;
-
-    function monitorScript() {
-      const signal = localStorage.getItem('scriptRunning');
-
-      if (signal === 'true') {
-          console.log("🟢 Script está funcionando.");
-          localStorage.setItem('scriptRunning', 'false');  // Reseta o sinal para a próxima verificação
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(monitorScript, 30000);  // Verifica novamente em 30 segundos
-      } else {
-          if (!alertSent && checked) {
-              alertSent = true;
-              alert("⚠️ O script parou de rodar ou não está mais enviando o sinal.");
-              console.log("🔴 O script não enviou o sinal. Enviando alerta.");
-              window.location.href = "https://joaogqpugliese.github.io/alerta-eventos/alerta.html?tipo=chutado";  // Chama a si mesmo
-              enviarNotificacao("🚫 O script parou de rodar ou não enviou sinal.");
-          }
-
-          if (!checked) {
-              checked = true;
-              clearTimeout(timeoutId);
-              timeoutId = setTimeout(monitorScript, 30000);  // Espera 30 segundos antes de verificar novamente
-          }
-      }
-    }
-
-    window.onload = monitorScript;
   </script>
 </body>
 </html>
