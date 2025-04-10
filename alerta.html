@@ -19,26 +19,19 @@
 </head>
 <body>
   <div id="mensagem">Processando alerta...</div>
-  <audio id="somAlerta" autoplay>
-    <source src="" type="audio/mpeg">
-    Seu navegador não suporta o elemento de áudio.
-  </audio>
 
   <script>
     const eventos = {
       vaga: {
         mensagem: "🎯 VAGA DETECTADA no site de agendamentos!",
-        som: "https://www.soundjay.com/button/beep-05.wav",
         repeticoes: 10
       },
       logout: {
         mensagem: "🔐 Sessão expirada por inatividade.",
-        som: "https://www.soundjay.com/button/beep-09.wav",
         repeticoes: 1
       },
       chutado: {
         mensagem: "🚫 Você foi CHUTADO do sistema por erro interno.",
-        som: "https://www.soundjay.com/button/beep-10.wav",
         repeticoes: 1
       }
     };
@@ -71,13 +64,37 @@
     if (eventos[tipoEvento]) {
       const evento = eventos[tipoEvento];
       document.getElementById('mensagem').innerText = evento.mensagem;
-      const somAlerta = document.getElementById('somAlerta');
-      somAlerta.src = evento.som;
-      somAlerta.play().catch(() => alert("🔊 Alerta sonoro não pôde ser reproduzido."));
       enviarNotificacao(evento.mensagem, evento.repeticoes);
     } else {
       document.getElementById('mensagem').innerText = "❓ Tipo de evento desconhecido.";
     }
+
+    let timeoutId;
+    let alertSent = false;
+
+    // Função para verificar se o sinal foi recebido
+    function monitorScript() {
+      const signal = localStorage.getItem('scriptRunning');
+
+      if (signal === 'true') {
+          // Sinal recebido, resetando o alerta
+          console.log("🟢 Script está funcionando.");
+          localStorage.setItem('scriptRunning', 'false');  // Reseta o sinal para a próxima verificação
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(monitorScript, 30000); // Verifica novamente em 30 segundos
+      } else {
+          // Se não receber o sinal, envia o alerta
+          if (!alertSent) {
+              alertSent = true;
+              alert("⚠️ O script parou de rodar ou não está mais enviando o sinal.");
+              console.log("🔴 O script não enviou o sinal. Enviando alerta.");
+              window.location.href = "https://joaogqpugliese.github.io/alerta-eventos/alerta.html?tipo=chutado";  // Chama a si mesmo
+          }
+      }
+    }
+
+    // Inicia o monitoramento assim que a página carregar
+    window.onload = monitorScript;
   </script>
 </body>
 </html>
